@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript"> //스크립트태그을 사용해 javascript를 text 형식으로 바꿔 주는 형식으로 변환
+
+	function login() { 
+    //아래 form의 onsubmit을 통해 login()이라는 함수가 input을 통해 작동되면 전송된 모든 데이터를
+		var serData = $('#loginForm').serialize();
+    //serData라는 객체에 loginForm의 form의 모든 데이터에 담는다.
+		
+		$.ajax({ // 전송된 모든 데이터를 보낼 때 ajax를 사용하며 앞의 달러와 .을 꼭 넣을 것
+			type : 'post',
+			data : serData, //보낼 데이터는 serData이고
+			dataType: 'text', //txt 타입으로 보내고
+			cashe: false, //캐시는 저장하지 않도록 하고
+			url: '/signUp', //데이터를 처리할 url로 데이터전송
+			success: function(res) { //데이터를 무사히 처리하여 값을 받았다면 res라는 이름으로 데이터 관리
+				var resObj = JSON.parse(res); //받은 res데이터를 JSON형식으로 parse한다.
+				console.log(resObj);
+				if(resObj){ 
+					alert('로그인 성공'); //로그인 성공
+				}
+				else{
+					alert('로그인 실패');
+				}
+			},
+		});
+		return false; //false의 의미는 데이터의 전송, ajax와 상관없이 페이지의 갱신을 막아 다음 페이지로 이동하는 것을 막는다.
+	}
+</script>
+
+</head>
+<body>
+ <p>안녕하세요. 손님</p>
+	<form id = "loginForm" action="/test" method="post"> <!-- onsubmit='return login();' -->
+		<input type="hidden" name = "cmd" value = "check">
+		 아이디 : <input type="text" name="id">
+		패스워드 : <input type="password" name="password">
+		<input type="submit" value="login">
+	</form>
+	<div>
+		<br><button name = "test" id="1" onclick="login()">onclick</button>
+	</div>
+</body>
+</html>
